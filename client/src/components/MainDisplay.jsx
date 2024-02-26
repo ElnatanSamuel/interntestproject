@@ -18,10 +18,13 @@ const MainDisplay = () => {
 
   useEffect(() => {
     dispatch(getSongsFetch());
-    setTimeout(() => {
+    // setTimeout(() => {
+    //   setLoading(false);
+    // }, 4000);
+    if (songs.length) {
       setLoading(false);
-    }, 4000);
-  }, [dispatch, isLoading, loading]);
+    }
+  }, [dispatch, isLoading, loading, songs]);
 
   const handleDeleteSong = (song) => {
     axios.post(
