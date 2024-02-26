@@ -16,9 +16,10 @@ const MainDisplay = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     dispatch(getSongsFetch());
+
     setTimeout(() => {
       setLoading(false);
-    }, 4000);
+    }, 5000);
   }, [dispatch]);
 
   const handleDeleteSong = (song) => {

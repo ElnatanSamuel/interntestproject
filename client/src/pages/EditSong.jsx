@@ -47,7 +47,7 @@ const EditSong = () => {
     };
 
     axios.post(
-      "http://elnatansamueldev.internaddis.com.elnatansamueldev.com/api/editsong",
+      "https://elnatansamueldev.internaddis.com.elnatansamueldev.com/api/editsong",
       songData
     );
 
