@@ -34,6 +34,7 @@ const EditSong = () => {
   const [newArtist, setNewArtist] = useState(song.artist);
   const [newDesc, setNewDesc] = useState(song.desc);
   const [newDuration, setNewDuration] = useState(song.duration);
+  const [required, setRequired] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -46,12 +47,21 @@ const EditSong = () => {
       activeId,
     };
 
-    axios.post(
-      "https://elnatansamueldev.interntestserver.com.elnatansamueldev.com/api/editsong",
-      songData
-    );
-
-    navigate("/");
+    if (
+      newName === "" ||
+      newArtist === "" ||
+      newDesc === "" ||
+      newDuration === ""
+    ) {
+      setRequired(true);
+    } else {
+      setRequired(false);
+      axios.post(
+        "https://elnatansamueldev.interntestserver.com.elnatansamueldev.com/api/editsong",
+        songData
+      );
+      navigate("/");
+    }
   };
 
   return (
@@ -91,6 +101,11 @@ const EditSong = () => {
           value={newDuration}
           onChange={(e) => setNewDuration(e.target.value)}
         />
+        {required === true ? (
+          <p className="text-xl text-white font-bold p-4 mt-4 bg-red-400">
+            Please fill all the above fields
+          </p>
+        ) : null}
         <button
           css={css`
             margin-top: 20px;

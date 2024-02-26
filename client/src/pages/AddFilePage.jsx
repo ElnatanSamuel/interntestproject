@@ -26,10 +26,10 @@ const AddFilePage = () => {
   const [desc, setDesc] = useState("");
   const [duration, setDuration] = useState("");
   const [id, setId] = useState(uuidv4());
+  const [required, setRequired] = useState(false);
   const navigate = useNavigate();
   const handleFormSubmit = (e) => {
     e.preventDefault();
-
     const songData = {
       name,
       artist,
@@ -38,12 +38,17 @@ const AddFilePage = () => {
       id,
     };
 
-    axios.post(
-      "https://elnatansamueldev.interntestserver.com.elnatansamueldev.com/api/addsong",
-      songData
-    );
+    if (name === "" || artist === "" || desc === "" || duration === "") {
+      setRequired(true);
+    } else {
+      setRequired(false);
+      axios.post(
+        "https://elnatansamueldev.interntestserver.com.elnatansamueldev.com/api/addsong",
+        songData
+      );
 
-    navigate("/");
+      navigate("/");
+    }
   };
 
   return (
@@ -79,6 +84,11 @@ const AddFilePage = () => {
           id="duration"
           onChange={(e) => setDuration(e.target.value)}
         />
+        {required === true ? (
+          <p className="text-xl text-white font-bold p-4 mt-4 bg-red-400">
+            Please fill all the above fields
+          </p>
+        ) : null}
         <button
           css={css`
             margin-top: 20px;
