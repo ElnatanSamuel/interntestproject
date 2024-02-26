@@ -16,15 +16,14 @@ const MainDisplay = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     dispatch(getSongsFetch());
-
     setTimeout(() => {
       setLoading(false);
-    }, 5000);
+    }, 4000);
   }, [dispatch]);
 
   const handleDeleteSong = (song) => {
     axios.post(
-      "http://elnatansamueldev.internaddis.com.elnatansamueldev.com/api/deletesong",
+      "https://elnatansamueldev.internaddis.com.elnatansamueldev.com/api/deletesong",
       song
     );
     dispatch(deleteSong(song.id));
