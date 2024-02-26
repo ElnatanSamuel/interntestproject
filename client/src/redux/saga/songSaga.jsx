@@ -6,7 +6,7 @@ function* workGetSongsFetch() {
 
   const allSongs = yield call(() =>
     fetch(
-      "https://elnatansamueldev.internaddis.com.elnatansamueldev.com/api/allsongs"
+      "https://elnatansamueldev.interntestserver.com.elnatansamueldev.com/api/allsongs"
     )
   );
 

@@ -39,7 +39,7 @@ const AddFilePage = () => {
     };
 
     axios.post(
-      "https://elnatansamueldev.internaddis.com.elnatansamueldev.com/api/addsong",
+      "https://elnatansamueldev.interntestserver.com.elnatansamueldev.com/api/addsong",
       songData
     );
 
