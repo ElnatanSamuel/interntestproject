@@ -1,28 +1,82 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  allSongs: [],
-  isLoading: false,
+  songs: [],
+  loading: false,
+  error: null,
 };
 
-export const songSlice = createSlice({
+const songSlice = createSlice({
   name: "allsongs",
   initialState,
   reducers: {
-    getSongsFetch: (state) => {
-      state.isLoading = true;
+    fetchSongsRequest(state) {
+      state.loading = true;
     },
-    getSongsSuccses: (state, action) => {
-      state.allSongs = action.payload;
-      state.isLoading = false;
+    fetchSongsSuccess(state, action) {
+      state.loading = false;
+      state.error = null;
+      state.songs = action.payload;
     },
-    deleteSong: (state, action) => {
-      state.allSongs = state.allSongs.filter(
-        (song) => song.id !== action.payload
+    fetchSongsFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    addSongRequest(state) {
+      state.loading = true;
+    },
+    addSongSuccess(state, action) {
+      state.loading = false;
+      state.error = null;
+      state.songs.push(action.payload);
+    },
+    addSongFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    updateSongRequest(state) {
+      state.loading = true;
+    },
+    updateSongSuccess(state, action) {
+      state.loading = false;
+      state.error = null;
+      const updatedSong = action.payload;
+      state.songs = state.songs.map((song) =>
+        song._id === updatedSong._id ? updatedSong : song
       );
+    },
+    updateSongFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    deleteSongRequest(state) {
+      state.loading = true;
+    },
+    deleteSongSuccess(state, action) {
+      state.loading = false;
+      state.error = null;
+      state.songs = state.songs.filter((song) => song._id !== action.payload);
+    },
+    deleteSongFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
     },
   },
 });
 
-export const { getSongsFetch, getSongsSuccses, deleteSong } = songSlice.actions;
+export const {
+  fetchSongsRequest,
+  fetchSongsSuccess,
+  fetchSongsFailure,
+  addSongRequest,
+  addSongSuccess,
+  addSongFailure,
+  updateSongRequest,
+  updateSongSuccess,
+  updateSongFailure,
+  deleteSongRequest,
+  deleteSongSuccess,
+  deleteSongFailure,
+} = songSlice.actions;
+
 export default songSlice.reducer;

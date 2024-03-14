@@ -4,7 +4,8 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateSongRequest } from "../redux/songSlice";
 
 const Input = styled.input`
   padding: 6px;
@@ -22,17 +23,19 @@ const Label = styled.label`
 `;
 
 const EditSong = () => {
-  const songData = useSelector((state) => state.addsong.allSongs);
+  const oldSongData = useSelector((state) => state.allsongs.songs);
+
   const navigate = useNavigate();
   const id = useParams();
   const activeId = id.id;
 
-  const result = songData.filter(({ id }) => activeId.includes(id));
+  const result = oldSongData.filter(({ id }) => activeId.includes(id));
   const song = result[0];
 
-  const [newName, setNewName] = useState(song.name);
+  const dispatch = useDispatch();
+  const [newTitle, setNewTitle] = useState(song.title);
   const [newArtist, setNewArtist] = useState(song.artist);
-  const [newDesc, setNewDesc] = useState(song.desc);
+  const [newGenre, setNewGenre] = useState(song.genre);
   const [newDuration, setNewDuration] = useState(song.duration);
   const [required, setRequired] = useState(false);
 
@@ -40,26 +43,23 @@ const EditSong = () => {
     e.preventDefault();
 
     const songData = {
-      newName,
+      newTitle,
       newArtist,
-      newDesc,
+      newGenre,
       newDuration,
       activeId,
     };
 
     if (
-      newName === "" ||
+      newTitle === "" ||
       newArtist === "" ||
-      newDesc === "" ||
+      newTitle === "" ||
       newDuration === ""
     ) {
       setRequired(true);
     } else {
       setRequired(false);
-      axios.post(
-        "https://elnatansamueldev.interntestserver.com.elnatansamueldev.com/api/editsong",
-        songData
-      );
+      dispatch(updateSongRequest(songData));
       navigate("/");
     }
   };
@@ -73,12 +73,12 @@ const EditSong = () => {
           flex-direction: column;
         `}
       >
-        <Label htmlFor="name">Song Name: </Label>
+        <Label htmlFor="name">Title: </Label>
         <Input
           type="text"
           id="name"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
         />
         <Label htmlFor="artist">Artist: </Label>
         <Input
@@ -87,12 +87,12 @@ const EditSong = () => {
           value={newArtist}
           onChange={(e) => setNewArtist(e.target.value)}
         />
-        <Label htmlFor="desc">Description: </Label>
+        <Label htmlFor="desc">Genre: </Label>
         <Input
           type="text"
           id="desc"
-          value={newDesc}
-          onChange={(e) => setNewDesc(e.target.value)}
+          value={newGenre}
+          onChange={(e) => setNewGenre(e.target.value)}
         />
         <Label htmlFor="duration">Duration: </Label>
         <Input

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { addSongRequest } from "../redux/songSlice";
+import { useDispatch } from "react-redux";
 
 const Input = styled.input`
   padding: 6px;
@@ -21,32 +23,31 @@ const Label = styled.label`
 `;
 
 const AddFilePage = () => {
-  const [name, setName] = useState("");
+  const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
-  const [desc, setDesc] = useState("");
+  const [genre, setGenre] = useState("");
   const [duration, setDuration] = useState("");
   const [id, setId] = useState(uuidv4());
   const [required, setRequired] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleFormSubmit = (e) => {
     e.preventDefault();
     const songData = {
-      name,
+      title,
       artist,
-      desc,
+      genre,
       duration,
       id,
     };
 
-    if (name === "" || artist === "" || desc === "" || duration === "") {
+    console.log(songData);
+
+    if (title === "" || artist === "" || genre === "" || duration === "") {
       setRequired(true);
     } else {
       setRequired(false);
-      axios.post(
-        "https://elnatansamueldev.interntestserver.com.elnatansamueldev.com/api/addsong",
-        songData
-      );
-
+      dispatch(addSongRequest(songData));
       navigate("/");
     }
   };
@@ -60,11 +61,11 @@ const AddFilePage = () => {
           flex-direction: column;
         `}
       >
-        <Label htmlFor="name">Song Name: </Label>
+        <Label htmlFor="name">Title: </Label>
         <Input
           type="text"
           id="name"
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <Label htmlFor="artist">Artist: </Label>
         <Input
@@ -72,11 +73,11 @@ const AddFilePage = () => {
           id="artist"
           onChange={(e) => setArtist(e.target.value)}
         />
-        <Label htmlFor="desc">Description: </Label>
+        <Label htmlFor="desc">Genre: </Label>
         <Input
           type="text"
           id="desc"
-          onChange={(e) => setDesc(e.target.value)}
+          onChange={(e) => setGenre(e.target.value)}
         />
         <Label htmlFor="duration">Duration: </Label>
         <Input
