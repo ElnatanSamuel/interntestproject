@@ -18,7 +18,10 @@ import {
 // Function to fetch songs from the server
 function* fetchSongs() {
   try {
-    const response = yield call(axios.get, "http://localhost:5000/api/songs");
+    const response = yield call(
+      axios.get,
+      "https://server-b5g5gtq5r-elnatansamuel.vercel.app/api/songs"
+    );
     yield put(fetchSongsSuccess(response.data));
   } catch (error) {
     yield put(fetchSongsFailure(error.message));
@@ -30,7 +33,7 @@ function* addSong(action) {
   try {
     const response = yield call(
       axios.post,
-      "http://localhost:5000/api/songs",
+      "https://server-b5g5gtq5r-elnatansamuel.vercel.app/api/songs",
       action.payload
     );
 
@@ -45,7 +48,7 @@ function* updateSong(action) {
   try {
     const response = yield call(
       axios.post,
-      "http://localhost:5000/api/songs/editsong",
+      "https://server-b5g5gtq5r-elnatansamuel.vercel.app/api/songs/editsong",
       action.payload
     );
     console.log(response.data, "server response");
@@ -60,7 +63,7 @@ function* deleteSong(action) {
   try {
     yield call(
       axios.post,
-      "http://localhost:5000/api/songs/deletesong",
+      "https://server-b5g5gtq5r-elnatansamuel.vercel.app/api/songs/deletesong",
       action.payload
     );
     yield put(deleteSongSuccess(action.payload));
