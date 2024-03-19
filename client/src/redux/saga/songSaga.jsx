@@ -16,13 +16,22 @@ import {
 } from "../songSlice";
 
 // Function to fetch songs from the server
+const getData = () => {
+  const api = "https://internship.testserver.elnatansamueldev.com/api/allsongs";
+  return axios
+    .get("https://internship.testserver.elnatansamueldev.com/api/allsongs")
+    .then((res) => {
+      const result = res;
+      return { result };
+    })
+    .catch((err) => {
+      return { err };
+    });
+};
 function* fetchSongs() {
   try {
-    const response = yield call(
-      axios.get,
-      "https://server-b5g5gtq5r-elnatansamuel.vercel.app/api/songs"
-    );
-    yield put(fetchSongsSuccess(response.data));
+    const response = yield call(getData);
+    yield put(fetchSongsSuccess(response.result.data));
   } catch (error) {
     yield put(fetchSongsFailure(error.message));
   }
@@ -33,7 +42,7 @@ function* addSong(action) {
   try {
     const response = yield call(
       axios.post,
-      "https://server-b5g5gtq5r-elnatansamuel.vercel.app/api/songs",
+      "https://internship.testserver.elnatansamueldev.com/api/addsong",
       action.payload
     );
 
@@ -48,7 +57,7 @@ function* updateSong(action) {
   try {
     const response = yield call(
       axios.post,
-      "https://server-b5g5gtq5r-elnatansamuel.vercel.app/api/songs/editsong",
+      "https://internship.testserver.elnatansamueldev.com/api/editsong",
       action.payload
     );
     console.log(response.data, "server response");
@@ -63,7 +72,7 @@ function* deleteSong(action) {
   try {
     yield call(
       axios.post,
-      "https://server-b5g5gtq5r-elnatansamuel.vercel.app/api/songs/deletesong",
+      "https://internship.testserver.elnatansamueldev.com/api/deletesong",
       action.payload
     );
     yield put(deleteSongSuccess(action.payload));
